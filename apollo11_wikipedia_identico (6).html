@@ -1,0 +1,551 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;}
+.wp{font-family:'Linux Libertine','Georgia','Times New Roman',Times,serif;font-size:14px;line-height:1.6;color:#202122;max-width:680px;padding:0 0 2rem;}
+a{color:#3366cc;text-decoration:none;}
+a:hover{text-decoration:underline;}
+p{margin-bottom:0.8em;}
+
+/* Top bar */
+.wp-topbar{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #a2a9b1;padding-bottom:4px;margin-bottom:2px;}
+.wp-tabs{display:flex;gap:0;font-size:13px;font-family:sans-serif;}
+.wp-tab{padding:4px 12px;color:#3366cc;cursor:pointer;border-bottom:2px solid transparent;}
+.wp-tab.active{color:#202122;border-bottom:2px solid #202122;}
+.wp-actions{display:flex;gap:8px;font-size:13px;font-family:sans-serif;color:#3366cc;}
+.wp-actions span{cursor:pointer;}
+.wp-actions span:hover{text-decoration:underline;}
+
+/* Title */
+.wp-title{font-family:'Linux Libertine','Georgia','Times New Roman',serif;font-size:28px;font-weight:normal;border-bottom:1px solid #a2a9b1;padding-bottom:3px;margin-bottom:4px;color:#202122;line-height:1.2;}
+.wp-from{font-size:13px;color:#54595d;font-family:sans-serif;margin-bottom:8px;}
+
+/* Hatnotes */
+.hatnote{font-size:13px;font-style:italic;padding:2px 0 2px 1.5em;color:#54595d;margin-bottom:4px;}
+
+/* Infobox */
+.infobox{float:right;clear:right;margin:0 0 1em 1.5em;background:#f8f9fa;border:1px solid #a2a9b1;font-size:12px;line-height:1.4;width:230px;font-family:sans-serif;}
+.ib-title{background:#cce0ff;text-align:center;font-weight:bold;padding:5px 8px;font-size:13px;border-bottom:1px solid #a2a9b1;font-family:'Linux Libertine','Georgia',serif;}
+.ib-img{text-align:center;padding:5px;border-bottom:1px solid #a2a9b1;}
+.ib-img img{width:100%;display:block;}
+.ib-caption{font-size:11px;color:#54595d;text-align:center;padding:3px 4px 0;line-height:1.3;}
+.ib-section{background:#cce0ff;font-weight:bold;padding:3px 6px;font-size:11px;border-top:1px solid #a2a9b1;border-bottom:1px solid #a2a9b1;text-align:center;}
+.ib-row{display:flex;border-top:1px solid #eaecf0;padding:2px 6px;}
+.ib-row:first-child{border-top:none;}
+.ib-label{font-weight:bold;min-width:80px;color:#202122;padding-right:4px;flex-shrink:0;}
+.ib-val{color:#202122;flex:1;}
+.ib-nav{display:flex;justify-content:space-between;padding:4px 8px;font-size:11px;border-top:1px solid #a2a9b1;background:#f8f9fa;}
+
+/* TOC */
+.toc{background:#f8f9fa;border:1px solid #a2a9b1;padding:8px 14px 10px;display:inline-block;margin:0.5em 0 1em;font-size:13px;font-family:sans-serif;min-width:180px;}
+.toc-title{font-weight:bold;text-align:center;margin-bottom:4px;}
+.toc ol{padding-left:1.4em;margin:0;}
+.toc li{margin:2px 0;line-height:1.5;}
+.toc ol ol{padding-left:1.4em;}
+
+/* Headings */
+h2.wph{font-family:'Linux Libertine','Georgia','Times New Roman',serif;font-size:22px;font-weight:normal;border-bottom:1px solid #a2a9b1;margin:1.2em 0 0.4em;padding-bottom:3px;color:#202122;}
+h3.wph{font-size:16px;font-weight:bold;margin:1em 0 0.3em;color:#202122;font-family:sans-serif;}
+
+/* Blockquote */
+blockquote{margin:0.8em 2.5em;padding:0;font-size:13px;line-height:1.6;}
+
+/* Buttons */
+.btn-bar{display:flex;gap:8px;margin:0.8em 0;flex-wrap:wrap;font-family:sans-serif;}
+.wikibtn{padding:5px 12px;border:1px solid #a2a9b1;background:#f8f9fa;color:#202122;font-size:13px;cursor:pointer;border-radius:2px;font-family:sans-serif;}
+.wikibtn:hover{background:#e8e9ea;}
+.wikibtn.active{background:#cce0ff;border-color:#72a0c1;font-weight:bold;}
+
+/* Panels */
+.panel{display:none;margin:0.5em 0 1em;}
+.panel.visible{display:block;}
+
+.frag-box{border:2px solid #3366cc;border-radius:2px;padding:0.8em 1em;background:#eaf3fb;font-size:14px;line-height:1.85;font-family:'Linux Libertine','Georgia',serif;}
+.legend{display:flex;gap:10px;margin-bottom:8px;font-size:12px;align-items:center;flex-wrap:wrap;font-family:sans-serif;}
+.vr{background:#4a7c2f;color:#fff;border-radius:2px;padding:0 5px;font-family:sans-serif;font-size:12px;font-style:normal;}
+.vi{background:#5b4db0;color:#fff;border-radius:2px;padding:0 5px;font-family:sans-serif;font-size:12px;font-style:normal;}
+
+.oraciones-box{border:2px solid #4a7c2f;border-radius:2px;padding:0.8em 1em;background:#f0f7ea;font-size:14px;line-height:1.85;font-family:'Linux Libertine','Georgia',serif;}
+.or-legend{display:flex;gap:8px;margin-bottom:8px;font-size:12px;align-items:center;flex-wrap:wrap;font-family:sans-serif;}
+.or-pip{display:inline-block;width:11px;height:11px;border-radius:2px;vertical-align:middle;margin-right:2px;}
+.oracion{border-radius:2px;padding:4px 8px;margin-bottom:4px;line-height:1.75;}
+.or-1{background:#dbeafe;border-left:3px solid #3b82f6;}
+.or-2{background:#ede9fe;border-left:3px solid #7c3aed;}
+.or-3{background:#dcfce7;border-left:3px solid #16a34a;}
+.or-4{background:#fef9c3;border-left:3px solid #ca8a04;}
+.or-5{background:#fee2e2;border-left:3px solid #dc2626;}
+
+/* Tiempo cards */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.6em;font-family:sans-serif;}
+.tcard{border-radius:2px;padding:0.7em;font-size:13px;line-height:1.6;}
+.card-indef{background:#dbeafe;border:1px solid #93c5fd;}
+.card-indef .ctitle{color:#1e3a8a;font-weight:bold;margin-bottom:4px;}
+.card-indef .cej{background:#fff;border-radius:2px;padding:3px 6px;margin-top:4px;color:#1d4ed8;font-style:italic;font-size:12px;}
+.card-imperf{background:#ede9fe;border:1px solid #c4b5fd;}
+.card-imperf .ctitle{color:#3b0764;font-weight:bold;margin-bottom:4px;}
+.card-imperf .cej{background:#fff;border-radius:2px;padding:3px 6px;margin-top:4px;color:#6d28d9;font-style:italic;font-size:12px;}
+.tip{background:#fefce8;border:1px solid #fde047;border-radius:2px;padding:5px 8px;font-size:12px;color:#713f12;margin-top:8px;font-family:sans-serif;}
+
+sup{font-size:10px;color:#3366cc;}
+body{background:#f8f9fa;padding-bottom:70px;}
+.wp-wrapper{max-width:680px;margin:0 auto;background:#fff;padding:1rem 1.5rem 2rem;box-shadow:0 0 0 1px #e0e0e0;}
+
+/* Inline verb marks — hidden by default, shown when body has class */
+.verb-span{border-radius:3px;padding:1px 3px;font-weight:bold;transition:background 0.2s;}
+body:not(.show-verbos) .verb-span{background:none !important;color:inherit;font-weight:inherit;}
+body.show-verbos .verb-reg{background:#d4edda;color:#2a6e1f;outline:1px solid #4a7c2f;}
+body.show-verbos .verb-irr{background:#e8e0f7;color:#3d2b8a;outline:1px solid #5b4db0;}
+
+/* Inline sentence marks — hidden by default */
+/* INDEFINIDO = naranja cálido | IMPERFECTO = azul celeste */
+.or-span{border-radius:3px;padding:2px 3px;transition:background 0.2s,outline 0.2s;cursor:pointer;}
+body:not(.show-oraciones) .or-span{background:none !important;border-left:none !important;cursor:default;}
+body.show-oraciones .or-indef{background:#fff3e0;border-left:3px solid #e67e22;padding-left:5px;}
+body.show-oraciones .or-imperf{background:#e3f2fd;border-left:3px solid #1e88e5;padding-left:5px;}
+body.show-oraciones .or-span:hover{filter:brightness(0.93);}
+body.show-oraciones .or-span.or-active{outline:2px solid #333;outline-offset:1px;}
+
+/* Floating explanation panel */
+.or-panel{
+  display:none;
+  position:fixed;
+  top:50%;
+  transform:translateY(-50%);
+  width:210px;
+  background:#fff;
+  border:1px solid #a2a9b1;
+  border-radius:4px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.13);
+  font-family:sans-serif;
+  font-size:13px;
+  z-index:200;
+  overflow:hidden;
+}
+.or-panel.visible{display:block;}
+.or-panel-header{padding:8px 10px;font-weight:bold;font-size:12px;letter-spacing:0.03em;text-transform:uppercase;}
+.or-panel-header.indef{background:#e67e22;color:#fff;}
+.or-panel-header.imperf{background:#1e88e5;color:#fff;}
+.or-panel-body{padding:10px;}
+.or-panel-tiempo{font-size:15px;font-weight:bold;margin-bottom:6px;}
+.or-panel-indef .or-panel-tiempo{color:#c0550a;}
+.or-panel-imperf .or-panel-tiempo{color:#1565c0;}
+.or-panel-trad{background:#f8f9fa;border-radius:3px;padding:6px 8px;font-style:italic;color:#202122;margin-bottom:8px;line-height:1.5;font-size:12px;}
+.or-panel-exp{font-size:12px;color:#444;line-height:1.55;}
+.or-panel-close{display:block;text-align:right;margin-top:8px;font-size:11px;color:#3366cc;cursor:pointer;border:none;background:none;padding:0;}
+.or-panel-close:hover{text-decoration:underline;}
+
+/* Sticky bar */
+.sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#fff;border-top:1px solid #a2a9b1;box-shadow:0 -2px 8px rgba(0,0,0,0.08);font-family:sans-serif;}
+.sticky-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:8px 1.5rem;gap:12px;flex-wrap:wrap;}
+.sticky-btns{display:flex;gap:8px;}
+.sticky-legend{display:flex;align-items:center;gap:6px;font-size:12px;color:#54595d;flex-wrap:wrap;}
+.vr-pill{background:#d4edda;color:#2a6e1f;border-radius:3px;padding:1px 6px;font-size:11px;font-weight:bold;outline:1px solid #4a7c2f;}
+.vi-pill{background:#e8e0f7;color:#3d2b8a;border-radius:3px;padding:1px 6px;font-size:11px;font-weight:bold;outline:1px solid #5b4db0;}
+.or-pip-s{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:middle;}
+
+@media(max-width:480px){.infobox{float:none;width:100%;margin:0 0 1em;}.tgrid{grid-template-columns:1fr;}.wp-wrapper{padding:0.5rem;}.sticky-inner{padding:8px 0.5rem;}}
+</style>
+
+<div class="wp-wrapper">
+<div class="wp">
+
+  <!-- Top bar -->
+  <div class="wp-topbar">
+    <div class="wp-tabs">
+      <span class="wp-tab active">Article</span>
+      <span class="wp-tab">Talk</span>
+    </div>
+    <div class="wp-actions">
+      <span>Read</span>
+      <span>View source</span>
+      <span>View history</span>
+      <span>Tools ▾</span>
+    </div>
+  </div>
+  <div class="wp-from" style="margin-top:4px;">From Wikipedia, the free encyclopedia</div>
+
+  <!-- Hatnotes -->
+  <div class="hatnote">"First Moon landing" and "The Moon landing" redirect here. For earlier uncrewed Moon landings, see <a href="#">Moon landing</a>.</div>
+  <div class="hatnote">This article is about the 1969 crewed lunar mission. For other uses, see <a href="#">Apollo 11 (disambiguation)</a>.</div>
+
+  <!-- INFOBOX -->
+  <div class="infobox">
+    <div class="ib-title">Apollo 11</div>
+    <div class="ib-img">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/A_Man_on_the_Moon%2C_AS11-40-5903_%28cropped%29.jpg/330px-A_Man_on_the_Moon%2C_AS11-40-5903_%28cropped%29.jpg" alt="Buzz Aldrin on the Moon">
+      <div class="ib-caption">Buzz Aldrin on the <a href="#">Moon</a> in a photograph taken by <a href="#">Neil Armstrong</a>, who can be seen in the visor reflection along with Earth, the <a href="#">Lunar Module <i>Eagle</i></a>, and the <a href="#">U.S. flag</a><sup>[1]</sup></div>
+    </div>
+    <div class="ib-section">Mission type</div>
+    <div class="ib-row"><span class="ib-label">Mission type</span><span class="ib-val">Crewed lunar landing (<a href="#">G</a>)</span></div>
+    <div class="ib-row"><span class="ib-label">Operator</span><span class="ib-val"><a href="#">NASA</a></span></div>
+    <div class="ib-row"><span class="ib-label">COSPAR ID</span><span class="ib-val">CSM: <a href="#">1969-059A</a> ↗<br>LM: <a href="#">1969-059C</a> ↗</span></div>
+    <div class="ib-row"><span class="ib-label">SATCAT no.</span><span class="ib-val">CSM: 4039<sup>[2]</sup><br>LM: 4041<sup>[3]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Mission duration</span><span class="ib-val">8 days, 3 hours, 18 minutes, 35 seconds</span></div>
+    <div class="ib-section">Spacecraft properties</div>
+    <div class="ib-row"><span class="ib-label">Spacecraft</span><span class="ib-val"><a href="#">Apollo CSM</a>-107<br><a href="#">Apollo LM</a>-5</span></div>
+    <div class="ib-row"><span class="ib-label">Manufacturer</span><span class="ib-val">CSM: <a href="#">North American Rockwell</a><sup>[4]</sup><br>LM: <a href="#">Grumman</a><sup>[4]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Launch mass</span><span class="ib-val">109,646 lb (49,735 kg)<sup>[5]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Landing mass</span><span class="ib-val">10,873 lb (4,932 kg)</span></div>
+    <div class="ib-section">Crew</div>
+    <div class="ib-row"><span class="ib-label">Crew size</span><span class="ib-val">3</span></div>
+    <div class="ib-row"><span class="ib-label">Members</span><span class="ib-val"><a href="#">Neil Armstrong</a><br><a href="#">Michael Collins</a><br><a href="#">Buzz Aldrin</a></span></div>
+    <div class="ib-row"><span class="ib-label">Callsign</span><span class="ib-val">CSM: <a href="#"><i>Columbia</i></a><br>LM: <a href="#"><i>Eagle</i></a><br>On surface: <a href="#"><i>Tranquility Base</i></a></span></div>
+    <div class="ib-section">Start of mission</div>
+    <div class="ib-row"><span class="ib-label">Launch date</span><span class="ib-val">July 16, 1969, 13:32:00 <a href="#">UTC</a><br>(9:32:00 am <a href="#">EDT</a>)<sup>[6]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Rocket</span><span class="ib-val"><a href="#">Saturn V</a> SA-506</span></div>
+    <div class="ib-row"><span class="ib-label">Launch site</span><span class="ib-val"><a href="#">Kennedy, LC‑39A</a></span></div>
+    <div class="ib-section">End of mission</div>
+    <div class="ib-row"><span class="ib-label">Recovered by</span><span class="ib-val"><a href="#">USS Hornet</a></span></div>
+    <div class="ib-row"><span class="ib-label">Landing date</span><span class="ib-val">July 24, 1969, 16:50:35 UTC</span></div>
+    <div class="ib-row"><span class="ib-label">Landing site</span><span class="ib-val">North Pacific Ocean<br>(🌐 <a href="#">13°19′N 169°9′W</a>)</span></div>
+    <div class="ib-section">Orbital parameters</div>
+    <div class="ib-row"><span class="ib-label">Reference system</span><span class="ib-val"><a href="#">Selenocentric</a></span></div>
+    <div class="ib-row"><span class="ib-label"><a href="#">Periselene altitude</a></span><span class="ib-val">100.9 km (54.5 nmi; 62.7 mi)<sup>[7]</sup></span></div>
+    <div class="ib-row"><span class="ib-label"><a href="#">Aposelene altitude</a></span><span class="ib-val">122.4 km (66.1 nmi; 76.1 mi)<sup>[7]</sup></span></div>
+    <div class="ib-row"><span class="ib-label"><a href="#">Inclination</a></span><span class="ib-val">1.25°<sup>[7]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Period</span><span class="ib-val">2 hours<sup>[7]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Epoch</span><span class="ib-val">July 19, 1969, 21:44 UTC<sup>[7]</sup></span></div>
+    <div class="ib-section"><a href="#">Lunar</a> orbiter</div>
+    <div class="ib-row"><span class="ib-label">Spacecraft component</span><span class="ib-val"><a href="#">Apollo command and service module</a></span></div>
+    <div class="ib-row"><span class="ib-label">Orbital insertion</span><span class="ib-val">July 19, 1969, 17:21:50 UTC<sup>[8]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Orbital departure</span><span class="ib-val">July 22, 1969, 04:55:42 UTC<sup>[9]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Orbits</span><span class="ib-val">30</span></div>
+    <div class="ib-section">Lunar lander</div>
+    <div class="ib-row"><span class="ib-label">Spacecraft component</span><span class="ib-val"><a href="#">Apollo Lunar Module</a></span></div>
+    <div class="ib-row"><span class="ib-label">Landing date</span><span class="ib-val">July 20, 1969, 20:17:40 UTC<sup>[10]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Return launch</span><span class="ib-val">July 21, 1969, 17:54:00 UTC<sup>[11]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Landing site</span><span class="ib-val"><a href="#">Tranquility Base</a>,<br><a href="#">Mare Tranquillitatis</a><br>(🌐 <a href="#">0.67416°N 23.47314°E</a>)</span></div>
+    <div class="ib-row"><span class="ib-label">Sample mass</span><span class="ib-val">47.51 lb (21.55 kg)</span></div>
+    <div class="ib-row"><span class="ib-label">Surface EVAs</span><span class="ib-val">1</span></div>
+    <div class="ib-row"><span class="ib-label">EVA duration</span><span class="ib-val">2 hours, 31 minutes, 40 seconds</span></div>
+    <div class="ib-section">Docking with Lunar module</div>
+    <div class="ib-row"><span class="ib-label">Docking date</span><span class="ib-val">July 16, 1969, 16:56:03 UTC<sup>[D]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Undocking date</span><span class="ib-val">July 20, 1969, 17:44:00 UTC<sup>[13]</sup></span></div>
+    <div class="ib-row"><span class="ib-label">Time docked</span><span class="ib-val">96 hours, 47 minutes, 57 seconds</span></div>
+    <div class="ib-section">Docking with Lunar module ascent stage</div>
+    <div class="ib-row"><span class="ib-label">Docking date</span><span class="ib-val">July 21, 1969, 21:35:00 UTC</span></div>
+    <div class="ib-row"><span class="ib-label">Undocking date</span><span class="ib-val">July 21, 1969, 23:41:31 UTC</span></div>
+    <div class="ib-row"><span class="ib-label">Time docked</span><span class="ib-val">2 hours, 6 minutes, 31 seconds</span></div>
+    <!-- Mission insignia -->
+    <div class="ib-img" style="border-top:1px solid #a2a9b1;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Apollo_11_insignia.png/250px-Apollo_11_insignia.png" alt="Apollo 11 mission insignia">
+      <div class="ib-caption">Mission insignia</div>
+    </div>
+    <!-- Crew photo -->
+    <div class="ib-img">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Apollo_11_Crew.jpg/250px-Apollo_11_Crew.jpg" alt="Apollo 11 crew">
+      <div class="ib-caption">Left to right: <a href="#">Armstrong</a>, <a href="#">Collins</a>, and <a href="#">Aldrin</a><br><a href="#">Apollo program</a></div>
+    </div>
+    <div class="ib-nav"><a href="#">← Apollo 10</a><a href="#">Apollo 12 →</a></div>
+  </div>
+
+  <!-- Title -->
+  <h1 class="wp-title">Apollo 11</h1>
+
+  <!-- Body text -->
+  <p>
+    <span class="or-span or-indef" id="oracion-p1a" onclick="mostrarPanel('p1a')"
+      data-tiempo="indef"
+      data-verbo="landed"
+      data-trad="Apollo 11 fue el vuelo espacial que por primera vez llevó humanos a la Luna."
+      data-exp="Hecho histórico puntual y único. En español: Pretérito Indefinido — llevó, aterrizó."
+    ><b>Apollo 11</b> <span class="verb-span verb-irr">was</span> the spaceflight that first <span class="verb-span verb-reg">landed</span> <a href="#">humans</a> on the <a href="#">Moon</a>.</span>
+
+    <span class="or-span or-imperf" id="oracion-p1b" onclick="mostrarPanel('p1b')"
+      data-tiempo="imperf"
+      data-verbo="were on"
+      data-trad="Todos ellos estaban en su segundo y último vuelo espacial."
+      data-exp="Estado o situación que describía a los astronautas en ese momento, no un evento. En español: Pretérito Imperfecto — estaban."
+    > All three <span class="verb-span verb-irr">were</span> on their second and final spaceflight.</span>
+  </p>
+
+  <p>
+    <span class="or-span or-imperf" id="oracion-p2a" onclick="mostrarPanel('p2a')"
+      data-tiempo="imperf"
+      data-verbo="consisted of"
+      data-trad="La nave Apollo consistía en tres partes."
+      data-exp="Descripción de cómo era la nave — característica permanente, no un evento. En español: Pretérito Imperfecto — consistía."
+    >The Apollo spacecraft <span class="verb-span verb-irr">consisted</span> of three parts.</span>
+
+    <span class="or-span or-imperf" id="oracion-p2b" onclick="mostrarPanel('p2b')"
+      data-tiempo="imperf"
+      data-verbo="housed / provided"
+      data-trad="El módulo de comando alojaba a los tres astronautas. El módulo de servicio proporcionaba propulsión y energía."
+      data-exp="Funciones que tenían los módulos — descripciones de características, no acciones puntuales. En español: Pretérito Imperfecto — alojaba, proporcionaba."
+    > The <a href="#">command module</a> <span class="verb-span verb-irr">housed</span> the three astronauts. The <a href="#">service module</a> <span class="verb-span verb-reg">provided</span> propulsion and power.</span>
+  </p>
+
+  <p>
+    <span class="or-span or-indef" id="oracion-p4a" onclick="mostrarPanel('p4a')"
+      data-tiempo="indef"
+      data-verbo="fulfilled"
+      data-trad="Cumplió el objetivo nacional fijado por Kennedy en mayo de 1961."
+      data-exp="Acción puntual y concreta con fecha precisa. En español: Pretérito Indefinido — cumplió."
+    >It <span class="verb-span verb-irr">fulfilled</span> a national goal set by President <a href="#">John F. Kennedy</a> in May 1961.</span>
+
+    <span class="or-span or-indef" id="oracion-p4b" onclick="mostrarPanel('p4b')"
+      data-tiempo="indef"
+      data-verbo="overcame"
+      data-trad="El programa superó un grave revés con el incendio fatal del Apollo 1 en enero de 1967."
+      data-exp="Evento negativo puntual con fecha exacta (enero de 1967). En español: Pretérito Indefinido — superó."
+    > The program <span class="verb-span verb-irr">overcame</span> a severe setback with the fatal <a href="#">Apollo 1</a> fire in January 1967.</span>
+
+    <span class="or-span or-indef" id="oracion-p4c" onclick="mostrarPanel('p4c')"
+      data-tiempo="indef"
+      data-verbo="crashed"
+      data-trad="La sonda lunar Luna 15 se estrelló en la Luna el 21 de julio."
+      data-exp="Evento puntual con fecha precisa (21 de julio). En español: Pretérito Indefinido — se estrelló."
+    > <a href="#">Luna 15</a> <span class="verb-span verb-reg">crashed</span> on the Moon on July 21,</span><span class="or-span or-imperf" id="oracion-p4d" onclick="mostrarPanel('p4d')"
+      data-tiempo="imperf"
+      data-verbo="were still on"
+      data-trad="mientras Armstrong y Aldrin todavía estaban en la superficie lunar."
+      data-exp="Estado de fondo simultáneo al evento puntual del crash. En español: Pretérito Imperfecto — estaban."
+    > while Armstrong and Aldrin <span class="verb-span verb-irr">were</span> still on the lunar surface.</span>
+  </p>
+
+  <p>
+    <span class="or-span or-indef" id="oracion-p5a" onclick="mostrarPanel('p5a')"
+      data-tiempo="indef"
+      data-verbo="declared"
+      data-trad="Armstrong declaró: 'Es un pequeño paso para el hombre, un gran salto para la humanidad'."
+      data-exp="Acción concreta y puntual: el momento exacto en que dijo esas palabras. En español: Pretérito Indefinido — declaró."
+    >Armstrong <span class="verb-span verb-reg">declared</span>: "<a href="#">That's one small step for [a] man, one giant leap for mankind</a>."</span>
+
+    <span class="or-span or-imperf" id="oracion-p5b" onclick="mostrarPanel('p5b')"
+      data-tiempo="imperf"
+      data-verbo="continued returning"
+      data-trad="Los instrumentos científicos seguían enviando datos años después."
+      data-exp="Acción continua y habitual que se extendía en el tiempo, sin fin preciso. En español: Pretérito Imperfecto — seguían enviando."
+    > Scientific instruments <span class="verb-span verb-irr">continued</span> returning data for years afterwards.</span>
+  </p>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#">Background</a></li>
+      <li><a href="#">Crew</a></li>
+      <li><a href="#">Mission highlights</a>
+        <ol>
+          <li><a href="#">Lunar surface operations</a></li>
+          <li><a href="#">Return to Earth</a></li>
+        </ol>
+      </li>
+      <li><a href="#">Legacy</a></li>
+    </ol>
+  </div>
+
+  <h2 class="wph">Background</h2>
+  <p>
+    <span class="or-span or-imperf" id="oracion-bg1" onclick="mostrarPanel('bg1')"
+      data-tiempo="imperf"
+      data-verbo="was engaged"
+      data-trad="Los Estados Unidos estaban inmersos en la Guerra Fría."
+      data-exp="Estado de fondo continuo sin inicio ni fin precisos. En español: Pretérito Imperfecto — estaban."
+    >The United States <span class="verb-span verb-irr">was engaged</span> in the <a href="#">Cold War</a>.<sup>[14]</sup></span>
+
+    <span class="or-span or-indef" id="oracion-bg2" onclick="mostrarPanel('bg2')"
+      data-tiempo="indef"
+      data-verbo="launched"
+      data-trad="La Unión Soviética lanzó el Sputnik 1."
+      data-exp="Acción puntual con fecha exacta (4 de octubre de 1957). En español: Pretérito Indefinido — lanzó."
+    > The Soviet Union <span class="verb-span verb-reg">launched</span> <a href="#">Sputnik 1</a>.<sup>[15]</sup></span>
+
+    <span class="or-span or-imperf" id="oracion-bg3" onclick="mostrarPanel('bg3')"
+      data-tiempo="imperf"
+      data-verbo="could deliver"
+      data-trad="La URSS podía lanzar armas nucleares a distancias intercontinentales."
+      data-exp="Capacidad que existía en ese momento — describe un estado, no un hecho. En español: Pretérito Imperfecto — podía."
+    > The USSR <span class="verb-span verb-irr">could</span> deliver <a href="#">nuclear weapons</a> over intercontinental distances.</span>
+  </p>
+
+  <p>This incident sparked the <a href="#">Sputnik crisis</a> and ignited the <a href="#">Space Race</a>, as both superpowers sought to demonstrate superiority in spaceflight.<sup>[16]</sup> President <a href="#">Dwight D. Eisenhower</a> responded to the challenge posed by Sputnik by creating the <a href="#">National Aeronautics and Space Administration</a> (NASA), and initiating <a href="#">Project Mercury</a>,<sup>[17]</sup> which aimed to place a man into <a href="#">Earth orbit</a>.<sup>[18]</sup> The Soviets took the lead on April 12, 1961, when cosmonaut <a href="#">Yuri Gagarin</a> became the first person in space and the first to orbit the Earth.<sup>[19]</sup> Nearly a month later, on May 5, 1961, Alan Shepard became the first American in space; his 15-minute flight was suborbital, not a full orbit.<sup>[20]</sup></p>
+
+  <p>Because the Soviet Union had <a href="#">launch vehicles</a> with higher lift capacity, President John F. Kennedy, Eisenhower's successor, chose a challenge that exceeded the capabilities of the existing generation of rockets, so that both countries would be starting from an equal position. A crewed mission to the Moon would serve this purpose.</p>
+
+  <p>On May 25, 1961, Kennedy addressed the <a href="#">United States Congress</a> on "Urgent National Needs" and declared:</p>
+
+  <blockquote>
+    <p>I believe that this nation should commit itself to achieving the goal, before this decade [1960s] is out, of landing a man on the Moon and returning him safely to the Earth. No single space project in this period will be more impressive to mankind, or more important for the long-range exploration of space; and none will be so difficult or expensive to accomplish. We propose to accelerate the development of the appropriate lunar space craft. We propose to develop alternate liquid and solid fuel boosters, much larger than any now being developed, until certain which is superior. We propose additional funds for other engine development and for unmanned explorations—explorations which are particularly important for one purpose which this nation will never overlook: the survival of the man who first makes this daring flight. But in a very real sense, it will not be one man going to the Moon—if we make this judgment affirmatively, it will be an entire nation.</p>
+  </blockquote>
+
+  <h2 class="wph" id="missionSection">Mission highlights</h2>
+  <h3 class="wph">Lunar surface operations</h3>
+
+  <!-- Párrafo con marcas inline para verbos y oraciones -->
+  <p id="paraVerbosOraciones">
+    <span class="or-span or-indef" id="oracion-1" onclick="mostrarPanel(1)"
+      data-tiempo="indef"
+      data-verbo="descended"
+      data-trad="Armstrong y Aldrin descendieron a la superficie."
+      data-exp="Acción puntual completada el 20 de julio a las 20:17 UTC. En español: Pretérito Indefinido — descendieron."
+    >Armstrong and Aldrin <span class="verb-span verb-irr">descended</span> to the surface.</span>
+
+    <span class="or-span or-imperf" id="oracion-1b" onclick="mostrarPanel('1b')"
+      data-tiempo="imperf"
+      data-verbo="remained"
+      data-trad="Collins permanecía en órbita lunar."
+      data-exp="Estado continuo de fondo mientras los otros actuaban. En español: Pretérito Imperfecto — permanecía."
+    > Collins <span class="verb-span verb-irr">remained</span> in lunar orbit.</span>
+
+    <span class="or-span or-indef" id="oracion-2" onclick="mostrarPanel(2)"
+      data-tiempo="indef"
+      data-verbo="became"
+      data-trad="Armstrong se convirtió en el primer humano en caminar sobre la Luna."
+      data-exp="Hecho único ocurrido en un instante preciso del pasado. En español: Pretérito Indefinido — se convirtió."
+    > Armstrong <span class="verb-span verb-irr">became</span> the first human to walk on the Moon.</span>
+
+    <span class="or-span or-indef" id="oracion-3" onclick="mostrarPanel(3)"
+      data-tiempo="indef"
+      data-verbo="spent"
+      data-trad="Juntos pasaron unas dos horas y media caminando."
+      data-exp="Acción concreta y terminada. En español: Pretérito Indefinido — pasaron."
+    > Together they <span class="verb-span verb-irr">spent</span> around two and a half hours walking.</span>
+
+    <span class="or-span or-indef" id="oracion-4" onclick="mostrarPanel(4)"
+      data-tiempo="indef"
+      data-verbo="rejoined"
+      data-trad="Se reunieron con Collins en órbita lunar."
+      data-exp="Acción puntual que marcó el fin de la estancia en la superficie. En español: Pretérito Indefinido — se reunieron."
+    > They <span class="verb-span verb-reg">rejoined</span> Collins in lunar orbit.</span>
+
+    <span class="or-span or-indef" id="oracion-5" onclick="mostrarPanel(5)"
+      data-tiempo="indef"
+      data-verbo="returned"
+      data-trad="La tripulación regresó sana y salva a la Tierra el 24 de julio."
+      data-exp="Acción finalizada con fecha exacta. En español: Pretérito Indefinido — regresó."
+    > The crew <span class="verb-span verb-reg">returned</span> safely to <a href="#">Earth</a> on July 24.</span>
+  </p>
+
+  <h3 class="wph">Return to Earth</h3>
+  <p>After liftoff from the lunar surface, the <i>Eagle</i> ascent stage rendezvoused and docked with <i>Columbia</i>. The crew then jettisoned the <i>Eagle</i> and began the journey back to Earth. The command module <i>Columbia</i> splashed down in the North Pacific Ocean on July 24, 1969, at 16:50 UTC. The crew was recovered by <a href="#">USS Hornet</a> and placed in quarantine for 21 days as a precaution against possible lunar contamination.</p>
+
+  <h2 class="wph">Legacy</h2>
+  <p>Apollo 11 was the culmination of the Space Race. Armstrong's moonwalk was broadcast live to an estimated 600 million viewers — roughly one-fifth of the world's population — making it among the most-watched television events in history. Stepping onto the lunar surface, Armstrong declared: <i>"That's one small step for [a] man, one giant leap for mankind."</i></p>
+  <p>Lunar samples returned by the mission led to the identification of three previously unrecognized minerals. The command module <i>Columbia</i> is preserved at the <a href="#">National Air and Space Museum</a> in Washington, D.C., while the descent stage of <i>Eagle</i> remains on the lunar surface.</p>
+
+</div>
+
+<!-- PANEL FLOTANTE ORACIONES -->
+<div class="or-panel" id="orPanel">
+  <div class="or-panel-header" id="orPanelHeader"></div>
+  <div class="or-panel-body" id="orPanelBody">
+    <div class="or-panel-tiempo" id="orPanelTiempo"></div>
+    <div class="or-panel-trad" id="orPanelTrad"></div>
+    <div class="or-panel-exp" id="orPanelExp"></div>
+    <button class="or-panel-close" onclick="cerrarPanel()">✕ cerrar</button>
+  </div>
+</div>
+
+<!-- BARRA STICKY -->
+<div class="sticky-bar">
+  <div class="sticky-inner">
+    <div class="sticky-legend" id="legendVerbos" style="display:none;">
+      <span class="vr-pill">verde</span> regular &nbsp;
+      <span class="vi-pill">violeta</span> irregular
+    </div>
+    <div class="sticky-legend" id="legendOraciones" style="display:none;">
+      <span class="or-pip-s" style="background:#e67e22;"></span> Indefinido &nbsp;
+      <span class="or-pip-s" style="background:#1e88e5;"></span> Imperfecto
+      &nbsp;· clic para ver análisis
+    </div>
+    <div class="sticky-btns">
+      <button class="wikibtn" id="btnVerbos" onclick="toggleVerbos()">📍 Verbos</button>
+      <button class="wikibtn" id="btnOraciones" onclick="toggleOraciones()">🇦🇷 Oraciones</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleVerbos(){
+  const on = document.body.classList.toggle('show-verbos');
+  document.getElementById('btnVerbos').classList.toggle('active', on);
+  document.getElementById('legendVerbos').style.display = on ? 'flex' : 'none';
+  if(on){
+    const first = document.querySelector('.verb-span');
+    if(first) setTimeout(()=>first.scrollIntoView({behavior:'smooth',block:'center'}),50);
+  }
+}
+
+function toggleOraciones(){
+  const on = document.body.classList.toggle('show-oraciones');
+  document.getElementById('btnOraciones').classList.toggle('active', on);
+  document.getElementById('legendOraciones').style.display = on ? 'flex' : 'none';
+  if(!on){ cerrarPanel(); }
+  if(on){
+    const first = document.getElementById('oracion-1');
+    if(first) setTimeout(()=>first.scrollIntoView({behavior:'smooth',block:'center'}),50);
+  }
+}
+
+function posicionarPanel(){
+  const panel = document.getElementById('orPanel');
+  const wrapper = document.querySelector('.wp-wrapper');
+  if(!wrapper) return;
+  const rect = wrapper.getBoundingClientRect();
+  const ww = window.innerWidth;
+  const panelW = 210;
+  const gap = 16;
+
+  // Try right side first
+  if(rect.right + gap + panelW <= ww){
+    panel.style.left = (rect.right + gap) + 'px';
+    panel.style.right = 'auto';
+  } else if(rect.left - gap - panelW >= 0){
+    // Left side
+    panel.style.left = (rect.left - gap - panelW) + 'px';
+    panel.style.right = 'auto';
+  } else {
+    // fallback: right edge of viewport
+    panel.style.left = 'auto';
+    panel.style.right = '8px';
+  }
+}
+
+function mostrarPanel(n){
+  if(!document.body.classList.contains('show-oraciones')) return;
+  const span = document.getElementById('oracion-' + n);
+  if(!span) return;
+
+  // Mark active
+  document.querySelectorAll('.or-span').forEach(s=>s.classList.remove('or-active'));
+  span.classList.add('or-active');
+
+  const tiempo = span.dataset.tiempo; // 'indef' or 'imperf'
+  const verbo = span.dataset.verbo;
+  const trad = span.dataset.trad;
+  const exp = span.dataset.exp;
+
+  const panel = document.getElementById('orPanel');
+  const header = document.getElementById('orPanelHeader');
+  const body = document.getElementById('orPanelBody');
+
+  if(tiempo === 'indef'){
+    header.textContent = '🟠 Pretérito Indefinido';
+    header.className = 'or-panel-header indef';
+    body.className = 'or-panel-body or-panel-indef';
+    document.getElementById('orPanelTiempo').textContent = verbo;
+  } else {
+    header.textContent = '🔵 Pretérito Imperfecto';
+    header.className = 'or-panel-header imperf';
+    body.className = 'or-panel-body or-panel-imperf';
+    document.getElementById('orPanelTiempo').textContent = verbo;
+  }
+
+  document.getElementById('orPanelTrad').textContent = trad;
+  document.getElementById('orPanelExp').textContent = exp;
+
+  posicionarPanel();
+  panel.classList.add('visible');
+}
+
+function cerrarPanel(){
+  document.getElementById('orPanel').classList.remove('visible');
+  document.querySelectorAll('.or-span').forEach(s=>s.classList.remove('or-active'));
+}
+
+window.addEventListener('resize', ()=>{
+  if(document.getElementById('orPanel').classList.contains('visible')) posicionarPanel();
+});
+</script>
+</div>
